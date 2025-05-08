@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<!-- 
+  Attribution: I independently created this project. 
+  AI tools (e.g., ChatGPT) were used minimally for guidance and support. 
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="icon" type="image/png" sizes="48x48" href="images/favicon.png">
+  <title>Settings</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: #f7faff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+      color: #333;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      font-size: 1.5em;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 60px;
+      width: 80%;
+      max-width: 1200px;
+      margin-top: 90px;
+      margin-bottom: 200px;
+      margin-left: -90px;
+    }
+
+    .flip-card {
+      background-color: transparent;
+      perspective: 1000px;
+      width: 100%;
+      height: 520px;
+    }
+
+    .flip-card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.6s;
+      transform-style: preserve-3d;
+      border-radius: 16px;
+    }
+
+    .flip-card.flipped .flip-card-inner {
+      transform: rotateY(180deg);
+    }
+
+    .flip-card-front, .flip-card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 16px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 10px;
+      text-align: center;
+    }
+
+    .flip-card-back {
+      transform: rotateY(180deg);
+      background-color: #ffccff;
+    }
+
+    .card-title {
+      font-size: 1.4em;
+      margin-bottom: 15px;
+      font-weight: bold;
+    }
+
+    p {
+      font-size: 1em;
+      color: #555;
+      margin-bottom: 20px;
+    }
+
+    button {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 30px;
+      background-color: #4CAF50;
+      color: white;
+      font-size: 0.9em;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+	  .flip-card-front img {
+  max-width: 100%;
+  max-height: 200px;
+  object-fit: contain;
+  border-radius: 10px;
+}
+@media (max-width: 1024px) {
+  .card-grid {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .card-container {
+    padding: 16px;
+  }
+  .card-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .card-container {
+    padding: 12px;
+  }
+  .card-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}
+
+
+
+    .timer-options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .timer-option {
+      padding: 8px;
+      cursor: pointer;
+      background-color: #80deea;
+      border-radius: 8px;
+      width: 80%;
+      text-align: center;
+      font-size: 0.9em;
+    }
+
+    .timer-option:hover {
+      background-color: #4dd0e1;
+    }
+
+    .input-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 15px 0;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    input[type="number"] {
+      padding: 8px;
+      font-size: 1.1em;
+      border-radius: 8px;
+      width: 60px;
+      text-align: center;
+    }
+
+    .timer {
+      font-size: 5em;
+      margin: 15px 0;
+      font-weight: bold;
+      width: 100%;
+      height: 150px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #ffe082;
+      border-radius: 10px;
+    }
+
+    .button-group {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .flip-icon {
+      margin-top: 20px;
+      font-size: 1.4em;
+      color: #555;
+      cursor: pointer;
+    }
+
+    .flip-icon:hover {
+      color: #333;
+    }
+
+    .deactivate-btn {
+      background-color: #f44336;
+    }
+
+    .deactivate-btn:hover {
+      background-color: #d32f2f;
+    }
+
+    .saved-message {
+      font-weight: bold;
+      margin: 10px 0;
+      color: #00796b;
+    }
+	  .logout-btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      background-color: grey;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .logout-btn:hover {
+      background-color: darkgrey;
+    }
+
+    .settings-btn {
+      font-size: 20px;
+      background-color: #ff4081;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .settings-btn:hover {
+      background-color: #f50057;
+    }
+  </style>
+</head>
+<body>
+  <h1>Select a Break Activity</h1>
+	<button class="settings-btn" onclick="window.location.href='notes.html'">Notes</button>
+    <div style="height: 10px;"></div> <!-- spacer -->
+    <button onclick="window.location.href='index.html'" class="logout-btn">LogOut</button>
+  <div class="card-grid" id="card-grid"></div>
+	
+
+  <script>
+    const cardData = [
+      { title: 'Stretch Break', description: 'Loosen up your muscles with a quick stretch.', image: 'images/stretch.gif', suggestions: [
+        { label: '5 Min', mins: 5, secs: 0 },
+        { label: '10 Min', mins: 10, secs: 0 },
+        { label: 'Pomodoro (25 Min)', mins: 25, secs: 0 }
+      ]},
+      { title: 'Water Break', description: 'Stay hydrated with a refreshing water break.', image: 'images/water.gif', suggestions: [
+        { label: '5 Min', mins: 5, secs: 0 },
+        { label: '10 Min', mins: 10, secs: 0 },
+        { label: 'Pomodoro (25 Min)', mins: 25, secs: 0 }
+      ]},
+      { title: 'Mindful Breathing', description: 'Clear your mind with a quick breathing session.',  image: 'images/mind.gif', suggestions: [
+        { label: '5 Min', mins: 5, secs: 0 },
+        { label: '10 Min', mins: 10, secs: 0 },
+        { label: 'Pomodoro (25 Min)', mins: 25, secs: 0 }
+      ]},
+      { title: 'Goal Check-In', description: 'Take a break and review your goals.', image: 'images/check.gif', suggestions: [
+        { label: '5 Min', mins: 5, secs: 0 },
+        { label: '10 Min', mins: 10, secs: 0 },
+        { label: 'Pomodoro (25 Min)', mins: 25, secs: 0 }
+      ]},
+      { title: 'Screen Clean Up', description: 'clean up your screen layout and free up space.', image: 'images/clean.gif', suggestions: [
+        { label: '5 Min', mins: 5, secs: 0 },
+        { label: '10 Min', mins: 10, secs: 0 },
+        { label: 'Pomodoro (25 Min)', mins: 25, secs: 0 }
+      ]},
+      { title: 'Positive Affirmations', description: 'Boost your day with inspirational quotes', image: 'images/heart.gif', suggestions: [
+        { label: '5 Min', mins: 5, secs: 0 },
+        { label: '10 Min', mins: 10, secs: 0 },
+        { label: 'Pomodoro (25 Min)', mins: 25, secs: 0 }
+      ]},
+      { title: 'Journaling Prompt', description: 'Reflect on your day.', image: 'images/pen.gif', suggestions: [
+        { label: '5 Min', mins: 5, secs: 0 },
+        { label: '10 Min', mins: 10, secs: 0 },
+        { label: 'Pomodoro (25 Min)', mins: 25, secs: 0 }
+      ]},
+      { title: 'Schedule a Call', description: 'Catch up with a friend.', image: 'images/call.gif', suggestions: [
+        { label: '5 Min', mins: 5, secs: 0 },
+        { label: '10 Min', mins: 10, secs: 0 },
+        { label: 'Pomodoro (25 Min)', mins: 25, secs: 0 }
+      ]}
+    ];
+
+    const cardGrid = document.getElementById('card-grid');
+
+    cardData.forEach(data => {
+      const card = document.createElement('div');
+      card.className = 'flip-card';
+      card.innerHTML = `
+        <div class="flip-card-inner">
+          <div class="flip-card-front">
+ <img src="${data.image}" alt="Butterfly" style="max-width: 300px; max-height: 300px; margin-bottom: 1px;" />
+            <div class="card-title">${data.title}</div>
+            <p>${data.description}</p>
+            <div class="saved-message" style="display: none;">Saved Timer: <span></span></div>
+            <button onclick="flipCard(this)">Activate</button>
+          </div>
+          <div class="flip-card-back">
+            <div class="timer-options">
+              ${data.suggestions.map(opt => `<div class="timer-option" onclick="setPresetOnly(this, ${opt.mins}, ${opt.secs})">${opt.label}</div>`).join('')}
+            </div>
+            <div class="input-group">
+              <label>Min:</label>
+              <input type="number" min="0" value="0" onchange="updateTimerDisplayFromInputs(this)">
+              <label>Sec:</label>
+              <input type="number" min="0" max="59" value="0" onchange="updateTimerDisplayFromInputs(this)">
+            </div>
+            <div class="timer">00:00</div>
+            <div class="button-group">
+              <button onclick="startTimer(this)">Start</button>
+              <button onclick="resetTimer(this)">Reset</button>
+              <button onclick="pauseOrResume(this)">Pause</button>
+              <button onclick="saveAndFlipBack(this)">Save</button>
+              <button class="deactivate-btn" onclick="deactivateCard(this)">Deactivate</button>
+            </div>
+            <div class="flip-icon" onclick="flipBack(this)">&#x21bb; Flip Back</div>
+          </div>
+        </div>`;
+      cardGrid.appendChild(card);
+    });
+
+    let currentTimer = null;
+    let totalTime = 0;
+    let isPaused = false;
+    let timeAtPause = 0;
+
+    function flipCard(btn) {
+      btn.closest('.flip-card').classList.add('flipped');
+    }
+
+    function flipBack(el) {
+      el.closest('.flip-card').classList.remove('flipped');
+    }
+
+    function setPresetOnly(el, mins, secs) {
+      const card = el.closest('.flip-card');
+      const inputs = card.querySelectorAll('input[type="number"]');
+      inputs[0].value = mins;
+      inputs[1].value = secs;
+      const saved = card.querySelector('.saved-message');
+      saved.querySelector('span').textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+      saved.style.display = 'block';
+      updateTimerDisplayFromInputs(inputs[0]);
+    }
+
+    function updateTimerDisplayFromInputs(input) {
+      const card = input.closest('.flip-card');
+      const mins = parseInt(card.querySelector('input[type="number"]:nth-of-type(1)').value) || 0;
+      const secs = parseInt(card.querySelector('input[type="number"]:nth-of-type(2)').value) || 0;
+      const display = card.querySelector('.timer');
+      totalTime = mins * 60 + secs;
+      updateTimerDisplay(display);
+    }
+
+    function saveAndFlipBack(el) {
+      const card = el.closest('.flip-card');
+      const mins = parseInt(card.querySelectorAll('input')[0].value) || 0;
+      const secs = parseInt(card.querySelectorAll('input')[1].value) || 0;
+      card.querySelector('.saved-message span').textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+      card.querySelector('.saved-message').style.display = 'block';
+      card.classList.remove('flipped');
+    }
+
+    function startTimer(btn) {
+      const card = btn.closest('.flip-card');
+      const mins = parseInt(card.querySelectorAll('input')[0].value) || 0;
+      const secs = parseInt(card.querySelectorAll('input')[1].value) || 0;
+      const display = card.querySelector('.timer');
+      totalTime = mins * 60 + secs;
+
+      if (isPaused) {
+        isPaused = false;
+        startInterval(display);
+      } else {
+        clearInterval(currentTimer);
+        startInterval(display);
+      }
+    }
+
+    function startInterval(display) {
+      currentTimer = setInterval(() => {
+        totalTime--;
+        updateTimerDisplay(display);
+        if (totalTime <= 0) {
+          clearInterval(currentTimer);
+        }
+      }, 1000);
+    }
+
+    function updateTimerDisplay(display) {
+      const mins = Math.floor(totalTime / 60);
+      const secs = totalTime % 60;
+      display.textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+    }
+
+    function resetTimer(btn) {
+      clearInterval(currentTimer);
+      const card = btn.closest('.flip-card');
+      const display = card.querySelector('.timer');
+      display.textContent = '00:00';
+    }
+
+    function pauseOrResume(btn) {
+      isPaused = !isPaused;
+      if (isPaused) {
+        clearInterval(currentTimer);
+      } else {
+        startTimer(btn);
+      }
+    }
+
+function deactivateCard(btn) {
+  const card = btn.closest('.flip-card');
+  card.classList.remove('flipped');
+  
+  // Reset timer display to 00:00
+  const display = card.querySelector('.timer');
+  display.textContent = '00:00';
+  
+  // Remove saved timer from localStorage and clear the saved message
+  const savedMessage = card.querySelector('.saved-message');
+  savedMessage.style.display = 'none'; // Hide saved message
+  savedMessage.querySelector('span').textContent = ''; // Clear saved time
+  
+  // Also clear timer settings from inputs
+  const inputs = card.querySelectorAll('input[type="number"]');
+  inputs[0].value = 0; // Reset minutes
+  inputs[1].value = 0; // Reset seconds
+  
+  // Remove saved timer from localStorage
+  localStorage.removeItem('timer');
+  localStorage.removeItem('selectedTimer');
+}
+
+
+  </script>
+</body>
+</html>
+
+
